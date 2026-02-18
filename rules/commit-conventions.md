@@ -12,15 +12,15 @@ Co-Authored-By: Claude <noreply@anthropic.com>
 
 ## Types
 
-| Type | Usage |
-|------|-------|
-| `feat` | New feature |
-| `fix` | Bug fix |
-| `docs` | Documentation only |
-| `chore` | Maintenance, dependencies |
+| Type       | Usage                                   |
+| ---------- | --------------------------------------- |
+| `feat`     | New feature                             |
+| `fix`      | Bug fix                                 |
+| `docs`     | Documentation only                      |
+| `chore`    | Maintenance, dependencies               |
 | `refactor` | Code change that neither fixes nor adds |
-| `test` | Adding or updating tests |
-| `ci` | CI/CD changes |
+| `test`     | Adding or updating tests                |
+| `ci`       | CI/CD changes                           |
 
 ## Scope (optional)
 

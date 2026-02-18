@@ -2,11 +2,11 @@
 
 ## Files
 
-| File | Purpose |
-|------|---------|
-| `settings.json` | Claude Code settings, model, plugins, permissions |
-| `settings.local.json` | Machine-specific overrides (not synced) |
-| `TODO.md` | Cross-session task tracking |
+| File                  | Purpose                                           |
+| --------------------- | ------------------------------------------------- |
+| `settings.json`       | Claude Code settings, model, plugins, permissions |
+| `settings.local.json` | Machine-specific overrides (not synced)           |
+| `TODO.md`             | Cross-session task tracking                       |
 
 ## Permissions
 
@@ -24,6 +24,6 @@ Evaluation order: `deny` → `ask` → `allow` (first match wins)
 
 ## Environment Variables
 
-| Variable | Purpose |
-|----------|---------|
+| Variable                               | Purpose                         |
+| -------------------------------------- | ------------------------------- |
 | `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` | Enables agent team coordination |

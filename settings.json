@@ -2,11 +2,6 @@
   "env": {
     "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
   },
-  "model": "opus",
-  "enabledPlugins": {
-    "gopls-lsp@claude-plugins-official": true,
-    "frontend-design@claude-plugins-official": true
-  },
   "permissions": {
     "allow": [
       "Bash(gh *)",
@@ -26,10 +21,14 @@
       "Bash(aws * scan*)",
       "Bash(aws * query*)",
       "WebSearch",
-      "WebFetch"
+      "WebFetch",
+      "Bash(npx prettier --write \"**/*\")"
     ],
-    "ask": [
-      "Bash(git push *)"
-    ]
+    "ask": ["Bash(git push *)"]
+  },
+  "model": "opus",
+  "enabledPlugins": {
+    "gopls-lsp@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true
   }
 }

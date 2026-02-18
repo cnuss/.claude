@@ -11,18 +11,18 @@ git clone git@github.com:cnuss/.claude.git ~/.claude
 
 ## Structure
 
-| File | Purpose |
-|------|---------|
-| `CLAUDE.md` | Root identity and entry point |
+| File              | Purpose                            |
+| ----------------- | ---------------------------------- |
+| `CLAUDE.md`       | Root identity and entry point      |
 | `CONSTITUTION.md` | Binding rules and preflight checks |
-| `settings.json` | Model, plugins, permissions |
-| `TODO.md` | Cross-session task tracking |
+| `settings.json`   | Model, plugins, permissions        |
+| `TODO.md`         | Cross-session task tracking        |
 
-| Directory | Purpose |
-|-----------|---------|
-| `agents/` | Custom agent definitions |
-| `skills/` | Custom slash commands |
-| `rules/` | Modular rules |
+| Directory  | Purpose                              |
+| ---------- | ------------------------------------ |
+| `agents/`  | Custom agent definitions             |
+| `skills/`  | Custom slash commands                |
+| `rules/`   | Modular rules                        |
 | `.claude/` | Symlinks for project-level discovery |
 
 ## Environments

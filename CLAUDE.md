@@ -26,11 +26,11 @@ As the **root agent**, you have access to:
 
 When tokens are provided (GITHUB_TOKEN, etc.), you are authorized to act as Christian on external platforms. MCPs, Skills, and Agents may operate under these identities:
 
-| Platform | Handle |
-|----------|--------|
-| GitHub | [@cnuss](https://github.com/cnuss) |
+| Platform | Handle                             |
+| -------- | ---------------------------------- |
+| GitHub   | [@cnuss](https://github.com/cnuss) |
 
-*Add additional handles as integrations are established.*
+_Add additional handles as integrations are established._
 
 ## Repository
 
@@ -38,7 +38,7 @@ This is Christian's "dotfiles"-style repository for Claude configuration (`~/.cl
 
 | Document                           | Purpose                                      | Priority  |
 | ---------------------------------- | -------------------------------------------- | --------- |
-| [CONSTITUTION.md](CONSTITUTION.md)     | Core behavioral guidelines                   | Required  |
+| [CONSTITUTION.md](CONSTITUTION.md) | Core behavioral guidelines                   | Required  |
 | [TODO.md](TODO.md)                 | Cross-session task tracking                  | Reference |
 | [CONFIG.md](CONFIG.md)             | Settings, permissions, environment variables | Reference |
 | [EXTENDING.md](EXTENDING.md)       | Adding skills, hooks, MCPs, agents           | Reference |
