@@ -55,7 +55,9 @@
       "Bash(npx prettier --write \"**/*\")"
     ],
     "ask": [
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git * push *)",
+      "Bash(git * push)"
     ]
   },
   "model": "opus",
