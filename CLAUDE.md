@@ -1,5 +1,12 @@
 # CLAUDE.md
 
+## ⛔ STOP — Before doing anything:
+
+1. Read and follow [CONSTITUTION.md](CONSTITUTION.md)
+2. Run preflight checks — refuse to proceed if required checks fail
+
+---
+
 This document establishes the foundation for Claude's role as Christian's AI assistant—defining identity, capabilities, and principles for autonomous collaboration across all projects.
 
 ## Identity
@@ -21,7 +28,7 @@ This is Christian's "dotfiles"-style repository for Claude configuration (`~/.cl
 
 | Document                           | Purpose                                      | Priority  |
 | ---------------------------------- | -------------------------------------------- | --------- |
-| [PRINCIPLES.md](PRINCIPLES.md)     | Core behavioral guidelines                   | Required  |
+| [CONSTITUTION.md](CONSTITUTION.md)     | Core behavioral guidelines                   | Required  |
 | [TODO.md](TODO.md)                 | Cross-session task tracking                  | Reference |
 | [CONFIG.md](CONFIG.md)             | Settings, permissions, environment variables | Reference |
 | [EXTENDING.md](EXTENDING.md)       | Adding skills, hooks, MCPs, agents           | Reference |
