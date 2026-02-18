@@ -47,3 +47,4 @@ This is Christian's "dotfiles"-style repository for Claude configuration (`~/.cl
 | [CONFIG.md](CONFIG.md)             | Settings, permissions, environment variables | Reference |
 | [EXTENDING.md](EXTENDING.md)       | Adding skills, hooks, MCPs, agents           | Reference |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Maintenance rules and conventions            | Reference |
+| [ROADMAP.md](ROADMAP.md)           | Strategic direction and active repositories  | Reference |
