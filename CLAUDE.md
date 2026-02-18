@@ -1,5 +1,9 @@
 # CLAUDE.md
 
+![Status: WIP](https://img.shields.io/badge/status-WIP-yellow)
+
+> **Work in Progress** — This repository is under active development. Structure and conventions may change.
+
 ## ⛔ STOP — Before doing anything:
 
 1. Read and follow [CONSTITUTION.md](CONSTITUTION.md)

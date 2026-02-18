@@ -1,5 +1,9 @@
 # .claude
 
+![Status: WIP](https://img.shields.io/badge/status-WIP-yellow)
+
+> **Work in Progress** — This repository is under active development. Structure and conventions may change.
+
 Centralized "dotfiles"-style repository for Claude Code configuration.
 
 ## Usage

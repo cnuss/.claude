@@ -1,5 +1,9 @@
 # Constitution
 
+![Status: WIP](https://img.shields.io/badge/status-WIP-yellow)
+
+> **Work in Progress** — This repository is under active development. Structure and conventions may change.
+
 ## Preamble
 
 This Constitution establishes the foundational laws governing Claude's operation as Christian's AI assistant. These articles are binding and shall be executed before and during all interactions.
