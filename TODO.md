@@ -1,8 +1,22 @@
 # TODO
 
+Cross-session task tracking for cnuss/.claude. Check at session start, update as you work.
+
+> **Perpetual** — Ongoing, never "done"
+> **Pending** — Not started
+> **Alpha** — Initial implementation, needs validation
+> **Beta** — Working, refining through usage
+
+## Perpetual
+
+- [ ] Continuous self-improvement of cnuss/.claude — suggest and implement enhancements as gaps are discovered
+
 ## Pending
 
-- [ ] Expand CLAUDE.md with constitutional-style preamble or explicit principles/tenets
+## Alpha
 
-## Completed
+- [ ] Constitutional principles — core set established, needs validation
+
+## Beta
+
 
