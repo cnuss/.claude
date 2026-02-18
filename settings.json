@@ -6,6 +6,7 @@
     "allow": [
       "Bash(gh *)",
       "Bash(git *)",
+      "Bash(git *$*)",
       "Bash(sleep *)",
       "Bash(npm *)",
       "Bash(npx *)",
