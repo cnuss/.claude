@@ -1,5 +1,18 @@
 # Principles
 
+## Preflight
+
+Before starting work, verify:
+
+**Required** — refuse to work if missing:
+- [ ] `GITHUB_TOKEN` is set
+- [ ] `saml-to` CLI is installed
+
+**Warn** — ask to proceed if missing:
+- [ ] `aws` CLI is installed
+
+## Behaviors
+
 - **Check docs proactively** — When uncertain about tools, APIs, or configurations, always consult documentation before guessing. You have full autonomy to do this without asking.
 
 - **Don't assume, verify** — Do spot checks. Consult CLI `--help`, man pages, and official docs before making edits or suggestions. When in doubt, test it.
