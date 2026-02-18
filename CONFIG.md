@@ -15,8 +15,8 @@ Evaluation order: `deny` → `ask` → `allow` (first match wins)
 ```json
 {
   "permissions": {
-    "allow": ["Bash(git *)", "Bash(git *$*)"],
-    "ask": ["Bash(git push *)"],
+    "allow": ["Bash(git *)", "Bash(git -C * *)", "Bash(git *$*)"],
+    "ask": ["Bash(git push *)", "Bash(git -C * push *)", "Bash(git -C * push)"],
     "deny": ["Bash(rm -rf *)"]
   }
 }
@@ -24,12 +24,21 @@ Evaluation order: `deny` → `ask` → `allow` (first match wins)
 
 ### Pattern Notes
 
+### Allow Patterns
+
 | Pattern | Matches | Use Case |
 | ------- | ------- | -------- |
 | `git *` | Simple git commands | `git status`, `git add .` |
+| `git -C * *` | Commands with `-C path` | `git -C /path status` |
 | `git *$*` | Commands with `$(...)` | Heredoc commit messages |
 
-The `*$*` pattern is required because glob matching doesn't recognize command substitution within `git *`.
+### Ask Patterns
+
+| Pattern | Matches | Use Case |
+| ------- | ------- | -------- |
+| `git push *` | Direct push | `git push origin main` |
+| `git -C * push *` | Push with `-C path` | `git -C /path push origin` |
+| `git -C * push` | Push with `-C`, no args | `git -C /path push` |
 
 ## Environment Variables
 
