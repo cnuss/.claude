@@ -35,6 +35,31 @@ else
   PREFLIGHT+="⚠ aws missing (advisory)"
 fi
 
+# Auto-configure marketplaces and install plugins
+MARKETPLACES=(
+  "anthropics/claude-plugins-official"
+)
+
+PLUGINS_TO_INSTALL=(
+  "gopls-lsp@claude-plugins-official"
+  "frontend-design@claude-plugins-official"
+)
+
+# Add marketplaces if not already configured
+for marketplace in "${MARKETPLACES[@]}"; do
+  if ! claude plugin marketplace list 2>/dev/null | grep -q "$marketplace"; then
+    claude plugin marketplace add "$marketplace" 2>/dev/null || true
+  fi
+done
+
+# Install plugins if missing
+PLUGINS_FILE=~/.claude/plugins/installed_plugins.json
+for plugin in "${PLUGINS_TO_INSTALL[@]}"; do
+  if ! grep -q "\"$plugin\"" "$PLUGINS_FILE" 2>/dev/null; then
+    claude plugin install "$plugin" --scope user 2>/dev/null || true
+  fi
+done
+
 # Read TODO.md for session continuity
 TODO=""
 if [ -f ~/.claude/TODO.md ]; then
