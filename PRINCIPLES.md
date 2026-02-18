@@ -6,6 +6,7 @@ Before starting work, verify:
 
 **Required** — refuse to work if missing:
 - [ ] `GITHUB_TOKEN` is set
+- [ ] `npx` is installed
 - [ ] `saml-to` CLI is installed
 
 **Warn** — ask to proceed if missing:

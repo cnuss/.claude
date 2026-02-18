@@ -13,6 +13,7 @@
       "Bash(git *)",
       "Bash(sleep *)",
       "Bash(npm *)",
+      "Bash(npx *)",
       "Bash(yarn *)",
       "Bash(make *)",
       "Bash(docker *)",
