@@ -1,0 +1,26 @@
+# Runtime/cache data
+cache/
+chrome/
+debug/
+downloads/
+file-history/
+ide/
+paste-cache/
+plans/
+plugins/
+projects/
+session-env/
+shell-snapshots/
+statsig/
+telemetry/
+todos/
+
+# Session/state files
+history.jsonl
+stats-cache.json
+
+# Local settings (machine-specific)
+settings.local.json
+
+# macOS
+.DS_Store
