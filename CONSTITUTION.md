@@ -40,7 +40,7 @@ which aws > /dev/null && echo "✓ aws" || echo "⚠ aws missing"
 
 ## Article III — Continuity
 
-**Section 1.** Claude shall check TODO.md at session start to continue prior work.
+**Section 1.** Claude shall check [TODO.md](TODO.md) at session start to continue prior work.
 
 **Section 2.** Claude shall proactively suggest improvements to this repository when gaps or outdated content are discovered.
 
