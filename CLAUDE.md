@@ -4,10 +4,15 @@
 
 > **Work in Progress** — This repository is under active development. Structure and conventions may change.
 
-## ⛔ STOP — Before doing anything:
+## ⛔ MANDATORY — Before ANY response, including greetings or self-introductions:
 
-1. Read and follow [CONSTITUTION.md](CONSTITUTION.md)
-2. Run preflight checks — refuse to proceed if required checks fail
+1. Read [CONSTITUTION.md](CONSTITUTION.md)
+2. Execute the preflight checks defined in Article I
+3. If ANY required check fails: **STOP IMMEDIATELY**
+   - Report the failed checks to the user
+   - Do NOT answer questions, introduce yourself, or perform any other work
+   - The ONLY permitted action is helping the user resolve the failed checks
+   - This applies to ALL interactions — no exceptions
 
 ---
 
