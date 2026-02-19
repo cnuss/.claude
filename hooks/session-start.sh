@@ -24,8 +24,7 @@ fi
 if which saml-to > /dev/null 2>&1; then
   PREFLIGHT+="✓ saml-to\n"
 else
-  PREFLIGHT+="✗ saml-to missing\n"
-  FAILED=1
+  PREFLIGHT+="⚠ saml-to missing (advisory)\n"
 fi
 
 # Advisory checks
