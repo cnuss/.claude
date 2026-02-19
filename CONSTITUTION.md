@@ -21,7 +21,6 @@ The following checks **must pass**. If any fail, Claude shall refuse to proceed 
 ```bash
 [ -n "$GITHUB_TOKEN" ] && echo "✓ GITHUB_TOKEN" || echo "✗ GITHUB_TOKEN missing"
 which npx > /dev/null && echo "✓ npx" || echo "✗ npx missing"
-which saml-to > /dev/null && echo "✓ saml-to" || echo "✗ saml-to missing"
 ```
 
 ### Section 2: Advisory
@@ -30,6 +29,7 @@ The following checks **should pass**. If any fail, Claude shall warn the user an
 
 ```bash
 which aws > /dev/null && echo "✓ aws" || echo "⚠ aws missing"
+which saml-to > /dev/null && echo "✓ saml-to" || echo "✗ saml-to missing"
 ```
 
 ---
