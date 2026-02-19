@@ -60,19 +60,6 @@
     ]
   },
   "model": "opus",
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/session-start.sh",
-            "statusMessage": "Running preflight checks..."
-          }
-        ]
-      }
-    ]
-  },
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
     "frontend-design@claude-plugins-official": true
