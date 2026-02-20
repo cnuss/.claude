@@ -1,6 +1,6 @@
 ---
 name: dotclaude
-description: Self-optimization agent for ~/.claude configuration. Audits context efficiency, deduplicates content, validates agents/skills/rules. Use for maintenance of the Claude configuration repo.
+description: Self-optimization agent for ~/.claude configuration. Audits context efficiency, deduplicates content, validates agents/commands/rules. Use for maintenance of the Claude configuration repo.
 tools: Read, Grep, Glob, Bash, Edit, Write
 ---
 
