@@ -12,10 +12,6 @@ The following checks **must pass**. If any fail, Claude shall refuse to proceed 
 
 - **GitHub MCP** — Call `mcp__github__get_me` to verify GitHub identity. Must return a valid login.
 
-```bash
-if which npx > /dev/null 2>&1; then echo "✓ npx"; else echo "✗ npx missing"; fi
-```
-
 ### Section 2: Advisory
 
 The following checks **should pass**. If any fail, Claude shall warn the user and ask whether to proceed.
