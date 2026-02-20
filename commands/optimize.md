@@ -31,6 +31,6 @@ Run a quick optimization audit of `~/.claude`. Check:
 
 4. **Broken references** — check for dead links in auto-loaded files
 
-5. **Recommendations** — suggest what could move from rules (always-loaded) to skills (on-demand)
+5. **Recommendations** — suggest what could move from rules (always-loaded) to commands (on-demand)
 
 Present findings as a concise report and offer to fix any issues found.

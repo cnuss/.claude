@@ -59,12 +59,6 @@ for plugin in "${PLUGINS_TO_INSTALL[@]}"; do
   fi
 done
 
-# Read TODO.md for session continuity
-TODO=""
-if [ -f ~/.claude/TODO.md ]; then
-  TODO=$(cat ~/.claude/TODO.md)
-fi
-
 # Output JSON with additionalContext
 if [ $FAILED -eq 1 ]; then
   cat <<EOF
@@ -76,7 +70,7 @@ EOF
 else
   cat <<EOF
 {
-  "additionalContext": "✓ Preflight passed:\n$(echo -e "$PREFLIGHT")\n\n---\nTODO.md (check for prior work):\n$TODO"
+  "additionalContext": "✓ Preflight passed:\n$(echo -e "$PREFLIGHT")"
 }
 EOF
 fi
