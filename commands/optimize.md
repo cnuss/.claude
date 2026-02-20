@@ -4,7 +4,7 @@ description: Audit and optimize ~/.claude for context window efficiency
 
 Run a quick optimization audit of `~/.claude`. Check:
 
-1. **Token budget** — measure auto-loaded content (CLAUDE.md + rules/\*.md)
+1. **Token budget** — measure auto-loaded content (CLAUDE.md + rules/*.md)
 
    ```bash
    echo "=== Auto-loaded files ===" && wc -l ~/.claude/CLAUDE.md ~/.claude/rules/*.md && echo "---" && cat ~/.claude/CLAUDE.md ~/.claude/rules/*.md | wc -l | xargs -I{} echo "Total: {} lines"
