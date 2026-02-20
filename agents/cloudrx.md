@@ -119,3 +119,29 @@ npm run build             # Production build
 - Runs on Node 20.x, 22.x, 24.x
 - Pre-release to npm on main branch (beta tag)
 - Concurrency with cancel-in-progress enabled
+
+## Security Maintenance
+
+### Dependabot Alerts
+
+**Autonomous authority**: Fix dependabot alerts without requiring explicit permission.
+
+**Process**:
+1. List alerts: `gh api repos/scaffoldly/cloudrx/dependabot/alerts --jq '.[] | select(.state == "open")'`
+2. Check dependency tree: `npm ls <package>`
+3. Determine fix strategy:
+   - **Direct dependency**: Update version in package.json
+   - **Transitive dependency**: Add to `overrides` in package.json
+4. Install and test: `npm install && npm run lint:fix && npm run test:spec`
+5. Commit with message: `fix(deps): <description>` referencing alert number
+
+**Override pattern** (for transitive deps):
+```json
+{
+  "overrides": {
+    "vulnerable-package": "^fixed.version"
+  }
+}
+```
+
+**Prioritization**: High/Critical severity first, then medium, then low.
