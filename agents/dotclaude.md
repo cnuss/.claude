@@ -125,5 +125,5 @@ When running maintenance:
 - [ ] No broken file references
 - [ ] CLAUDE.md is minimal (identity + structure only)
 - [ ] Rules contain only always-needed content
-- [ ] Session-specific content is in skills, not rules
+- [ ] Session-specific content is in commands, not rules
 - [ ] TODO.md and ROADMAP.md are current
