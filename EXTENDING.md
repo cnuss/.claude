@@ -98,12 +98,25 @@ Every agent MUST include:
 4. **Keep updated**: Update agent definitions as projects evolve — patterns change, new conventions emerge
 5. **Lint before commit**: Always run project linters before committing changes
 
-### Maintenance Reminder
+### Maintenance
 
-**IMPORTANT**: When updating agent structure or adding new standard sections:
-- Update this template in EXTENDING.md
-- Retroactively update ALL existing agents to match the new structure
-- Ensure consistency across all agent definitions
+**Discovering agents**: List active agents via `ls ~/.claude/agents/*.md`
 
-Current agents to maintain:
-- `~/.claude/agents/cloudrx.md`
+**When updating agent structure or adding new standard sections**:
+1. Update this template in EXTENDING.md
+2. Discover all agents: `ls ~/.claude/agents/*.md`
+3. Skip agents marked as archived (see below)
+4. Retroactively update remaining agents to match new structure
+
+### Archiving Agents
+
+To mark an agent as archived (no longer actively maintained), add this signature at the top of the file:
+
+```markdown
+<!-- STATUS: ARCHIVED -->
+```
+
+Archived agents:
+- Will not be retroactively updated when template changes
+- Remain available for reference
+- Can be un-archived by removing the signature
