@@ -152,44 +152,73 @@ If missing, dispatch to project agent to create the file, or create directly via
 
 ### Required Settings
 
-Check repo security settings:
+All managed repos should have these security features enabled (like cloudrx baseline):
+
+| Feature | Check Command | How to Enable |
+|---------|---------------|---------------|
+| Security policy | `gh api repos/{o}/{r}/contents/SECURITY.md` | Create `SECURITY.md` |
+| Security advisories | Repo Settings → Security | Enable in settings |
+| Private vulnerability reporting | Repo Settings → Security | Enable in settings |
+| Dependabot alerts | `gh api repos/{o}/{r}/vulnerability-alerts` | Enable in settings |
+| Code scanning alerts | `gh api repos/{o}/{r}/code-scanning/alerts` | Add CodeQL workflow |
+| Secret scanning alerts | API check below | Enable in settings |
+| dependabot.yml | `gh api repos/{o}/{r}/contents/.github/dependabot.yml` | Create from template |
+
+### Check Security Settings
+
 ```bash
 gh api repos/{owner}/{repo} --jq '{
-  dependabot_security_updates: .security_and_analysis.dependabot_security_updates.status,
+  security_policy: .security_and_analysis.advanced_security.status,
+  dependabot_alerts: .security_and_analysis.dependabot_security_updates.status,
   secret_scanning: .security_and_analysis.secret_scanning.status,
   secret_scanning_push_protection: .security_and_analysis.secret_scanning_push_protection.status
 }'
 ```
 
-### Baseline (all should be enabled)
+### Check for SECURITY.md
 
-| Feature | Status | How to Enable |
-|---------|--------|---------------|
-| Dependabot alerts | enabled | Repo Settings → Security |
-| Dependabot security updates | enabled | Repo Settings → Security |
-| Secret scanning | enabled | Repo Settings → Security |
-| Push protection | enabled | Repo Settings → Security |
-| dependabot.yml | exists | Create `.github/dependabot.yml` |
+```bash
+gh api repos/{owner}/{repo}/contents/SECURITY.md &>/dev/null && echo "✓ SECURITY.md" || echo "✗ SECURITY.md MISSING"
+```
+
+### Check for CodeQL Workflow
+
+```bash
+gh api repos/{owner}/{repo}/contents/.github/workflows --jq '.[].name' 2>/dev/null | grep -qi codeql && echo "✓ CodeQL" || echo "✗ CodeQL MISSING"
+```
 
 ### Check All Repos
 
 ```bash
 for f in ~/.claude/agents/*.md; do
+  [ "$(basename "$f")" = "security.md" ] && continue
   repo=$(grep -oE "github\.com/[^/]+/[^/)'\"\`]+" "$f" | head -1)
   if [ -n "$repo" ]; then
     owner_repo="${repo#github.com/}"
     echo "=== $owner_repo ==="
 
+    # Check SECURITY.md
+    gh api "repos/$owner_repo/contents/SECURITY.md" &>/dev/null \
+      && echo "  ✓ SECURITY.md" || echo "  ✗ SECURITY.md"
+
     # Check dependabot.yml
     gh api "repos/$owner_repo/contents/.github/dependabot.yml" &>/dev/null \
-      && echo "  ✓ dependabot.yml" || echo "  ✗ dependabot.yml MISSING"
+      && echo "  ✓ dependabot.yml" || echo "  ✗ dependabot.yml"
 
-    # Check security features
+    # Check CodeQL workflow
+    gh api "repos/$owner_repo/contents/.github/workflows" --jq '.[].name' 2>/dev/null | grep -qi codeql \
+      && echo "  ✓ CodeQL workflow" || echo "  ✗ CodeQL workflow"
+
+    # Check security features via API
     gh api "repos/$owner_repo" --jq '
-      "  " + (if .security_and_analysis.dependabot_security_updates.status == "enabled" then "✓" else "✗" end) + " dependabot_security_updates",
-      "  " + (if .security_and_analysis.secret_scanning.status == "enabled" then "✓" else "✗" end) + " secret_scanning",
-      "  " + (if .security_and_analysis.secret_scanning_push_protection.status == "enabled" then "✓" else "✗" end) + " push_protection"
+      "  " + (if .security_and_analysis.dependabot_security_updates.status == "enabled" then "✓" else "✗" end) + " Dependabot security updates",
+      "  " + (if .security_and_analysis.secret_scanning.status == "enabled" then "✓" else "✗" end) + " Secret scanning",
+      "  " + (if .security_and_analysis.secret_scanning_push_protection.status == "enabled" then "✓" else "✗" end) + " Push protection"
     ' 2>/dev/null || echo "  ? Could not fetch security settings"
+
+    # Check open alerts count
+    alerts=$(gh api "repos/$owner_repo/dependabot/alerts" --jq '[.[] | select(.state == "open")] | length' 2>/dev/null || echo "?")
+    echo "  → Open alerts: $alerts"
   fi
 done
 ```
@@ -202,12 +231,22 @@ When features are not enabled, produce warnings:
 ## Security Warnings - {repo}
 
 ⚠️ **Missing or Disabled Features:**
-- [ ] dependabot.yml not found - create from baseline template
-- [ ] Dependabot security updates disabled - enable in repo settings
-- [ ] Secret scanning disabled - enable in repo settings
-- [ ] Push protection disabled - enable in repo settings
 
-**Action Required**: Enable these features in GitHub repo settings or dispatch to project agent.
+### Files to Create (can dispatch to project agent):
+- [ ] SECURITY.md - security policy and vulnerability reporting instructions
+- [ ] .github/dependabot.yml - automated dependency updates
+- [ ] .github/workflows/codeql.yml - code scanning workflow
+
+### Settings to Enable (manual in GitHub UI):
+- [ ] Security advisories - Repo Settings → Security
+- [ ] Private vulnerability reporting - Repo Settings → Security
+- [ ] Dependabot alerts - Repo Settings → Security
+- [ ] Dependabot security updates - Repo Settings → Security
+- [ ] Code scanning alerts - Repo Settings → Security (requires CodeQL workflow)
+- [ ] Secret scanning - Repo Settings → Security
+- [ ] Push protection - Repo Settings → Security
+
+**Reference**: See scaffoldly/cloudrx for baseline configuration.
 ```
 
 ## Autonomous Authority
