@@ -187,6 +187,67 @@ gh api repos/{owner}/{repo}/contents/SECURITY.md &>/dev/null && echo "✓ SECURI
 gh api repos/{owner}/{repo}/contents/.github/workflows --jq '.[].name' 2>/dev/null | grep -qi codeql && echo "✓ CodeQL" || echo "✗ CodeQL MISSING"
 ```
 
+## SECURITY.md Version Matrix
+
+The `SECURITY.md` file contains a "Supported Versions" table that must stay accurate.
+
+### Validate Version Matrix
+
+Compare SECURITY.md versions against actual releases:
+
+```bash
+# Get versions from SECURITY.md
+gh api repos/{owner}/{repo}/contents/SECURITY.md --jq -r '.content' | base64 -d | grep -E "^\| [0-9]|^\| beta|^\| latest" | awk '{print $2}'
+
+# Get current version from package.json
+gh api repos/{owner}/{repo}/contents/package.json --jq -r '.content' | base64 -d | jq -r '.version'
+
+# Get published npm versions (for npm packages)
+npm view {package-name} versions --json 2>/dev/null | jq -r '.[]' | tail -5
+
+# Get git tags
+gh api repos/{owner}/{repo}/tags --jq '.[].name' | head -10
+```
+
+### Version Matrix Checks
+
+| Check | How |
+|-------|-----|
+| Current version listed | Compare package.json version to SECURITY.md |
+| Major versions covered | Ensure each major.minor has support status |
+| Old versions marked | EOL versions should show `:x:` not `:white_check_mark:` |
+| Beta/prerelease noted | If publishing beta, include in matrix |
+
+### Warning: Stale Version Matrix
+
+```markdown
+⚠️ **SECURITY.md Version Matrix May Be Stale**
+
+- Current version: {package.json version}
+- Latest in SECURITY.md: {version from file}
+- Published versions not in matrix: {list}
+
+**Action**: Update SECURITY.md Supported Versions table.
+```
+
+### Baseline SECURITY.md Template
+
+```markdown
+## Supported Versions
+
+| Version | Supported          |
+| ------- | ------------------ |
+| beta    | :white_check_mark: |
+| 1.0.x   | :white_check_mark: |
+| 0.9.x   | :white_check_mark: |
+| < 0.9   | :x:                |
+```
+
+Update this table when:
+- New major/minor version released
+- Old version reaches end-of-life
+- Support policy changes
+
 ### Check All Repos
 
 ```bash
