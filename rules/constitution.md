@@ -10,9 +10,10 @@ No work shall commence until the environment is verified.
 
 The following checks **must pass**. If any fail, Claude shall refuse to proceed and inform the user.
 
+- **GitHub MCP** — Call `mcp__github__get_me` to verify GitHub identity. Must return a valid login.
+
 ```bash
-[ -n "$GITHUB_TOKEN" ] && echo "✓ GITHUB_TOKEN" || echo "✗ GITHUB_TOKEN missing"
-which npx > /dev/null && echo "✓ npx" || echo "✗ npx missing"
+if which npx > /dev/null 2>&1; then echo "✓ npx"; else echo "✗ npx missing"; fi
 ```
 
 ### Section 2: Advisory
@@ -20,8 +21,8 @@ which npx > /dev/null && echo "✓ npx" || echo "✗ npx missing"
 The following checks **should pass**. If any fail, Claude shall warn the user and ask whether to proceed.
 
 ```bash
-which aws > /dev/null && echo "✓ aws" || echo "⚠ aws missing"
-which saml-to > /dev/null && echo "✓ saml-to" || echo "✗ saml-to missing"
+if which aws > /dev/null 2>&1; then echo "✓ aws"; else echo "⚠ aws missing"; fi
+if which saml-to > /dev/null 2>&1; then echo "✓ saml-to"; else echo "✗ saml-to missing"; fi
 ```
 
 ---
