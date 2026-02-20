@@ -117,12 +117,26 @@ When running a security audit, produce a report:
 
 ### Baseline Template
 
-Every managed repo should have `.github/dependabot.yml`:
+Every managed repo should have `.github/dependabot.yml`. Detect ecosystem and use appropriate config:
+
+| Manifest | Ecosystem Value |
+|----------|-----------------|
+| `package.json` | `npm` |
+| `Cargo.toml` | `cargo` |
+| `pyproject.toml` / `setup.py` / `requirements.txt` | `pip` |
+| `go.mod` | `gomod` |
+| `pom.xml` | `maven` |
+| `build.gradle` | `gradle` |
+| `Gemfile` | `bundler` |
+| `composer.json` | `composer` |
+| `Dockerfile` | `docker` |
+| `.github/workflows/*.yml` | `github-actions` |
 
 ```yaml
 version: 2
 updates:
-  - package-ecosystem: 'npm'  # or: pip, cargo, gomod, docker, etc.
+  # Detect and add appropriate ecosystem(s)
+  - package-ecosystem: 'npm'  # adjust based on project
     directory: '/'
     schedule:
       interval: 'weekly'
@@ -136,6 +150,12 @@ updates:
         update-types:
           - major
           - minor
+
+  # Always include GitHub Actions if workflows exist
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
 ```
 
 ### Check Dependabot Config
@@ -191,6 +211,25 @@ gh api repos/{owner}/{repo}/contents/.github/workflows --jq '.[].name' 2>/dev/nu
 
 The `SECURITY.md` file contains a "Supported Versions" table that must stay accurate.
 
+### Detect Project Type
+
+```bash
+# Check which package manifest exists
+gh api repos/{owner}/{repo}/contents --jq '.[].name' | grep -E "package.json|Cargo.toml|pyproject.toml|setup.py|go.mod|pom.xml|build.gradle|Gemfile|composer.json"
+```
+
+| File | Ecosystem | Version Command | Registry |
+|------|-----------|-----------------|----------|
+| `package.json` | npm | `jq -r '.version'` | npmjs.com |
+| `Cargo.toml` | Rust | `grep '^version' \| cut -d'"' -f2` | crates.io |
+| `pyproject.toml` | Python | `grep '^version' \| cut -d'"' -f2` | pypi.org |
+| `setup.py` | Python | `grep 'version=' \| grep -oE "[0-9]+\.[0-9]+\.[0-9]+"` | pypi.org |
+| `go.mod` | Go | Git tags (vX.Y.Z) | pkg.go.dev |
+| `pom.xml` | Java/Maven | `grep '<version>' \| head -1` | maven.org |
+| `build.gradle` | Java/Gradle | `grep "version\s*=" \| head -1` | maven.org |
+| `Gemfile` | Ruby | `.gemspec` file | rubygems.org |
+| `composer.json` | PHP | `jq -r '.version'` | packagist.org |
+
 ### Validate Version Matrix
 
 Compare SECURITY.md versions against actual releases:
@@ -199,14 +238,23 @@ Compare SECURITY.md versions against actual releases:
 # Get versions from SECURITY.md
 gh api repos/{owner}/{repo}/contents/SECURITY.md --jq -r '.content' | base64 -d | grep -E "^\| [0-9]|^\| beta|^\| latest" | awk '{print $2}'
 
-# Get current version from package.json
-gh api repos/{owner}/{repo}/contents/package.json --jq -r '.content' | base64 -d | jq -r '.version'
-
-# Get published npm versions (for npm packages)
-npm view {package-name} versions --json 2>/dev/null | jq -r '.[]' | tail -5
-
-# Get git tags
+# Get git tags (universal - works for all ecosystems)
 gh api repos/{owner}/{repo}/tags --jq '.[].name' | head -10
+
+# --- Per-ecosystem version checks ---
+
+# npm (package.json)
+gh api repos/{owner}/{repo}/contents/package.json --jq -r '.content' | base64 -d | jq -r '.version'
+npm view {package-name} versions --json 2>/dev/null | jq -r '.[-5:][]'
+
+# Rust (Cargo.toml)
+gh api repos/{owner}/{repo}/contents/Cargo.toml --jq -r '.content' | base64 -d | grep '^version' | cut -d'"' -f2
+
+# Python (pyproject.toml)
+gh api repos/{owner}/{repo}/contents/pyproject.toml --jq -r '.content' | base64 -d | grep -E '^version\s*=' | cut -d'"' -f2
+
+# Go (go.mod) - uses git tags
+gh api repos/{owner}/{repo}/tags --jq '.[].name' | grep -E '^v[0-9]' | head -5
 ```
 
 ### Version Matrix Checks
