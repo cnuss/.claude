@@ -54,7 +54,8 @@
       "Bash(cut *)",
       "WebSearch",
       "WebFetch",
-      "Bash(npx prettier --write \"**/*\")"
+      "Bash(npx prettier --write \"**/*\")",
+      "mcp__*"
     ],
     "ask": [
       "Bash(git*push*)"
