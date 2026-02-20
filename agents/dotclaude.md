@@ -121,7 +121,7 @@ When running maintenance:
 
 - [ ] No duplicate content across auto-loaded files
 - [ ] All agents match EXTENDING.md template
-- [ ] All skills have proper frontmatter
+- [ ] All commands have proper frontmatter
 - [ ] No broken file references
 - [ ] CLAUDE.md is minimal (identity + structure only)
 - [ ] Rules contain only always-needed content
