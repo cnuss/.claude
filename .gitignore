@@ -1,4 +1,5 @@
 # Runtime/cache data
+backups/
 cache/
 chrome/
 debug/
