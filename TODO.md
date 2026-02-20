@@ -16,6 +16,6 @@ Cross-session task tracking for cnuss/.claude. Check at session start, update as
 
 ## Alpha
 
-- [ ] Constitution (CONSTITUTION.md) — core set established, needs validation
+- [ ] Constitution (rules/constitution.md) — core set established, needs validation
 
 ## Beta

@@ -10,12 +10,12 @@ Centralized "dotfiles"-style repository for Claude Code configuration.
 
 ### 🏛️ Constitution
 
-A binding set of rules in [CONSTITUTION.md](CONSTITUTION.md) that govern Claude's behavior:
+A binding set of rules in [`rules/constitution.md`](rules/constitution.md) that govern Claude's behavior (auto-loaded every session):
 
 - **Preflight checks** — Required tools and tokens verified before work begins
 - **Verification discipline** — Consult docs, don't assume; test when uncertain
-- **Session continuity** — Check TODO.md to resume prior work
-- **Minimal footprint** — Focused solutions, no over-engineering
+- **Continuity** — Proactively suggest improvements to the repo
+- **Ambiguity** — Ask, don't guess
 
 ### 🪝 Hooks
 
@@ -38,12 +38,13 @@ A `SessionStart` hook ([hooks/session-start.sh](hooks/session-start.sh)) bootstr
 
 Reusable rules in `rules/` applied across all projects:
 
-| Rule                  | Purpose                           |
-| --------------------- | --------------------------------- |
-| `aws-readonly.md`     | Restrict AWS to read-only by default |
-| `code-style.md`       | Minimal footprint, context-first  |
-| `commit-conventions.md` | Conventional commits format     |
-| `git-workflow.md`     | Push confirmation, PR thresholds  |
+| Rule                    | Purpose                              |
+| ----------------------- | ------------------------------------ |
+| `constitution.md`       | Core behavioral guidelines           |
+| `aws-readonly.md`       | Restrict AWS to read-only by default |
+| `code-style.md`         | Minimal footprint, context-first     |
+| `commit-conventions.md` | Conventional commits format          |
+| `git-workflow.md`       | Push confirmation, PR thresholds     |
 
 ### 🔌 Auto-Configured Plugins
 
@@ -65,19 +66,18 @@ git clone git@github.com:cnuss/.claude.git ~/.claude
 
 ## Structure
 
-| File              | Purpose                            |
-| ----------------- | ---------------------------------- |
-| `CLAUDE.md`       | Root identity and entry point      |
-| `CONSTITUTION.md` | Binding rules and preflight checks |
-| `settings.json`   | Model, plugins, permissions        |
-| `TODO.md`         | Cross-session task tracking        |
+| File            | Purpose                       |
+| --------------- | ----------------------------- |
+| `CLAUDE.md`     | Root identity and entry point |
+| `settings.json` | Model, plugins, permissions   |
+| `TODO.md`       | Cross-session task tracking   |
 
-| Directory  | Purpose                              |
-| ---------- | ------------------------------------ |
-| `agents/`  | Custom agent definitions             |
-| `skills/`  | Custom slash commands                |
-| `rules/`   | Modular rules                        |
-| `.claude/` | Symlinks for project-level discovery |
+| Directory   | Purpose                              |
+| ----------- | ------------------------------------ |
+| `agents/`   | Custom agent definitions             |
+| `commands/` | Custom slash commands (skills)       |
+| `rules/`    | Modular rules (auto-loaded)          |
+| `.claude/`  | Symlinks for project-level discovery |
 
 ## Environments
 
