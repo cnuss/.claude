@@ -113,6 +113,103 @@ When running a security audit, produce a report:
 - {list of queued items}
 ```
 
+## Dependabot Configuration
+
+### Baseline Template
+
+Every managed repo should have `.github/dependabot.yml`:
+
+```yaml
+version: 2
+updates:
+  - package-ecosystem: 'npm'  # or: pip, cargo, gomod, docker, etc.
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+    groups:
+      production:
+        update-types:
+          - major
+          - minor
+          - patch
+      development:
+        update-types:
+          - major
+          - minor
+```
+
+### Check Dependabot Config
+
+```bash
+gh api repos/{owner}/{repo}/contents/.github/dependabot.yml 2>/dev/null && echo "✓ Configured" || echo "✗ Missing"
+```
+
+### Enable Dependabot
+
+If missing, dispatch to project agent to create the file, or create directly via PR.
+
+## GitHub Security Features
+
+### Required Settings
+
+Check repo security settings:
+```bash
+gh api repos/{owner}/{repo} --jq '{
+  dependabot_security_updates: .security_and_analysis.dependabot_security_updates.status,
+  secret_scanning: .security_and_analysis.secret_scanning.status,
+  secret_scanning_push_protection: .security_and_analysis.secret_scanning_push_protection.status
+}'
+```
+
+### Baseline (all should be enabled)
+
+| Feature | Status | How to Enable |
+|---------|--------|---------------|
+| Dependabot alerts | enabled | Repo Settings → Security |
+| Dependabot security updates | enabled | Repo Settings → Security |
+| Secret scanning | enabled | Repo Settings → Security |
+| Push protection | enabled | Repo Settings → Security |
+| dependabot.yml | exists | Create `.github/dependabot.yml` |
+
+### Check All Repos
+
+```bash
+for f in ~/.claude/agents/*.md; do
+  repo=$(grep -oE "github\.com/[^/]+/[^/)'\"\`]+" "$f" | head -1)
+  if [ -n "$repo" ]; then
+    owner_repo="${repo#github.com/}"
+    echo "=== $owner_repo ==="
+
+    # Check dependabot.yml
+    gh api "repos/$owner_repo/contents/.github/dependabot.yml" &>/dev/null \
+      && echo "  ✓ dependabot.yml" || echo "  ✗ dependabot.yml MISSING"
+
+    # Check security features
+    gh api "repos/$owner_repo" --jq '
+      "  " + (if .security_and_analysis.dependabot_security_updates.status == "enabled" then "✓" else "✗" end) + " dependabot_security_updates",
+      "  " + (if .security_and_analysis.secret_scanning.status == "enabled" then "✓" else "✗" end) + " secret_scanning",
+      "  " + (if .security_and_analysis.secret_scanning_push_protection.status == "enabled" then "✓" else "✗" end) + " push_protection"
+    ' 2>/dev/null || echo "  ? Could not fetch security settings"
+  fi
+done
+```
+
+### Warnings Format
+
+When features are not enabled, produce warnings:
+
+```markdown
+## Security Warnings - {repo}
+
+⚠️ **Missing or Disabled Features:**
+- [ ] dependabot.yml not found - create from baseline template
+- [ ] Dependabot security updates disabled - enable in repo settings
+- [ ] Secret scanning disabled - enable in repo settings
+- [ ] Push protection disabled - enable in repo settings
+
+**Action Required**: Enable these features in GitHub repo settings or dispatch to project agent.
+```
+
 ## Autonomous Authority
 
 This agent has authority to:
@@ -120,8 +217,12 @@ This agent has authority to:
 - Dispatch security fixes to project agents without asking
 - Merge dependabot PRs after verification (via project agents)
 - Create security audit reports
+- **Create dependabot.yml** via PR if missing
+- **Warn about disabled security features** and instruct how to enable
+- **Dispatch to project agents** to fix security configuration
 
 This agent does NOT:
 - Fix vulnerabilities directly (delegates to project agents)
 - Monitor repos without a corresponding project agent
 - Skip verification steps
+- Enable GitHub repo settings directly (requires manual action or admin API access)
