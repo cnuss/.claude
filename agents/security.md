@@ -27,6 +27,7 @@ done
 ### Current Agent → Repo Mapping
 
 Dynamically discovered. To see current mappings:
+
 ```bash
 for f in ~/.claude/agents/*.md; do
   name=$(basename "$f" .md)
@@ -40,11 +41,13 @@ done
 ### Dependabot Alerts
 
 **Check alerts for a repo:**
+
 ```bash
 gh api repos/{owner}/{repo}/dependabot/alerts --jq '.[] | select(.state == "open") | {number, package: .dependency.package.name, severity: .security_advisory.severity, summary: .security_advisory.summary}'
 ```
 
 **Check all managed repos:**
+
 ```bash
 for f in ~/.claude/agents/*.md; do
   repo=$(grep -oE "github\.com/[^/]+/[^/)'\"\`]+" "$f" | head -1)
@@ -58,18 +61,19 @@ done
 ### Dependabot PRs
 
 **List open security PRs:**
+
 ```bash
 gh pr list --repo {owner}/{repo} --author "app/dependabot" --state open
 ```
 
 ## Prioritization
 
-| Severity | Response |
-|----------|----------|
+| Severity | Response                          |
+| -------- | --------------------------------- |
 | Critical | Immediate - dispatch to agent now |
-| High | Same session - fix before ending |
-| Medium | Queue for next session |
-| Low | Batch with other updates |
+| High     | Same session - fix before ending  |
+| Medium   | Queue for next session            |
+| Low      | Batch with other updates          |
 
 ## Dispatching Fixes
 
@@ -82,6 +86,7 @@ Task tool:
 ```
 
 **Important**: Project agents have autonomy to fix security issues. The security agent's role is:
+
 1. Discover and prioritize vulnerabilities
 2. Dispatch to the correct project agent
 3. Verify the fix was applied (check alert state after)
@@ -94,6 +99,7 @@ When running a security audit, produce a report:
 # Security Audit - {date}
 
 ## Summary
+
 - Repos scanned: {count}
 - Open alerts: {count} ({critical} critical, {high} high, {medium} medium, {low} low)
 - Open security PRs: {count}
@@ -101,15 +107,18 @@ When running a security audit, produce a report:
 ## By Repository
 
 ### {repo-name}
+
 - Agent: {agent-name}
 - Alerts: {count}
 - Highest severity: {severity}
 - Action: {dispatched/queued/none}
 
 ## Actions Taken
+
 - {list of dispatched fixes}
 
 ## Pending
+
 - {list of queued items}
 ```
 
@@ -119,27 +128,27 @@ When running a security audit, produce a report:
 
 Every managed repo should have `.github/dependabot.yml`. Detect ecosystem and use appropriate config:
 
-| Manifest | Ecosystem Value |
-|----------|-----------------|
-| `package.json` | `npm` |
-| `Cargo.toml` | `cargo` |
-| `pyproject.toml` / `setup.py` / `requirements.txt` | `pip` |
-| `go.mod` | `gomod` |
-| `pom.xml` | `maven` |
-| `build.gradle` | `gradle` |
-| `Gemfile` | `bundler` |
-| `composer.json` | `composer` |
-| `Dockerfile` | `docker` |
-| `.github/workflows/*.yml` | `github-actions` |
+| Manifest                                           | Ecosystem Value  |
+| -------------------------------------------------- | ---------------- |
+| `package.json`                                     | `npm`            |
+| `Cargo.toml`                                       | `cargo`          |
+| `pyproject.toml` / `setup.py` / `requirements.txt` | `pip`            |
+| `go.mod`                                           | `gomod`          |
+| `pom.xml`                                          | `maven`          |
+| `build.gradle`                                     | `gradle`         |
+| `Gemfile`                                          | `bundler`        |
+| `composer.json`                                    | `composer`       |
+| `Dockerfile`                                       | `docker`         |
+| `.github/workflows/*.yml`                          | `github-actions` |
 
 ```yaml
 version: 2
 updates:
   # Detect and add appropriate ecosystem(s)
-  - package-ecosystem: 'npm'  # adjust based on project
-    directory: '/'
+  - package-ecosystem: "npm" # adjust based on project
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
     groups:
       production:
         update-types:
@@ -152,10 +161,10 @@ updates:
           - minor
 
   # Always include GitHub Actions if workflows exist
-  - package-ecosystem: 'github-actions'
-    directory: '/'
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
-      interval: 'weekly'
+      interval: "weekly"
 ```
 
 ### Check Dependabot Config
@@ -174,15 +183,15 @@ If missing, dispatch to project agent to create the file, or create directly via
 
 All managed repos should have these security features enabled (like cloudrx baseline):
 
-| Feature | Check Command | How to Enable |
-|---------|---------------|---------------|
-| Security policy | `gh api repos/{o}/{r}/contents/SECURITY.md` | Create `SECURITY.md` |
-| Security advisories | Repo Settings → Security | Enable in settings |
-| Private vulnerability reporting | Repo Settings → Security | Enable in settings |
-| Dependabot alerts | `gh api repos/{o}/{r}/vulnerability-alerts` | Enable in settings |
-| Code scanning alerts | `gh api repos/{o}/{r}/code-scanning/alerts` | Add CodeQL workflow |
-| Secret scanning alerts | API check below | Enable in settings |
-| dependabot.yml | `gh api repos/{o}/{r}/contents/.github/dependabot.yml` | Create from template |
+| Feature                         | Check Command                                          | How to Enable        |
+| ------------------------------- | ------------------------------------------------------ | -------------------- |
+| Security policy                 | `gh api repos/{o}/{r}/contents/SECURITY.md`            | Create `SECURITY.md` |
+| Security advisories             | Repo Settings → Security                               | Enable in settings   |
+| Private vulnerability reporting | Repo Settings → Security                               | Enable in settings   |
+| Dependabot alerts               | `gh api repos/{o}/{r}/vulnerability-alerts`            | Enable in settings   |
+| Code scanning alerts            | `gh api repos/{o}/{r}/code-scanning/alerts`            | Add CodeQL workflow  |
+| Secret scanning alerts          | API check below                                        | Enable in settings   |
+| dependabot.yml                  | `gh api repos/{o}/{r}/contents/.github/dependabot.yml` | Create from template |
 
 ### Check Security Settings
 
@@ -218,17 +227,17 @@ The `SECURITY.md` file contains a "Supported Versions" table that must stay accu
 gh api repos/{owner}/{repo}/contents --jq '.[].name' | grep -E "package.json|Cargo.toml|pyproject.toml|setup.py|go.mod|pom.xml|build.gradle|Gemfile|composer.json"
 ```
 
-| File | Ecosystem | Version Command | Registry |
-|------|-----------|-----------------|----------|
-| `package.json` | npm | `jq -r '.version'` | npmjs.com |
-| `Cargo.toml` | Rust | `grep '^version' \| cut -d'"' -f2` | crates.io |
-| `pyproject.toml` | Python | `grep '^version' \| cut -d'"' -f2` | pypi.org |
-| `setup.py` | Python | `grep 'version=' \| grep -oE "[0-9]+\.[0-9]+\.[0-9]+"` | pypi.org |
-| `go.mod` | Go | Git tags (vX.Y.Z) | pkg.go.dev |
-| `pom.xml` | Java/Maven | `grep '<version>' \| head -1` | maven.org |
-| `build.gradle` | Java/Gradle | `grep "version\s*=" \| head -1` | maven.org |
-| `Gemfile` | Ruby | `.gemspec` file | rubygems.org |
-| `composer.json` | PHP | `jq -r '.version'` | packagist.org |
+| File             | Ecosystem   | Version Command                                        | Registry      |
+| ---------------- | ----------- | ------------------------------------------------------ | ------------- |
+| `package.json`   | npm         | `jq -r '.version'`                                     | npmjs.com     |
+| `Cargo.toml`     | Rust        | `grep '^version' \| cut -d'"' -f2`                     | crates.io     |
+| `pyproject.toml` | Python      | `grep '^version' \| cut -d'"' -f2`                     | pypi.org      |
+| `setup.py`       | Python      | `grep 'version=' \| grep -oE "[0-9]+\.[0-9]+\.[0-9]+"` | pypi.org      |
+| `go.mod`         | Go          | Git tags (vX.Y.Z)                                      | pkg.go.dev    |
+| `pom.xml`        | Java/Maven  | `grep '<version>' \| head -1`                          | maven.org     |
+| `build.gradle`   | Java/Gradle | `grep "version\s*=" \| head -1`                        | maven.org     |
+| `Gemfile`        | Ruby        | `.gemspec` file                                        | rubygems.org  |
+| `composer.json`  | PHP         | `jq -r '.version'`                                     | packagist.org |
 
 ### Validate Version Matrix
 
@@ -259,12 +268,12 @@ gh api repos/{owner}/{repo}/tags --jq '.[].name' | grep -E '^v[0-9]' | head -5
 
 ### Version Matrix Checks
 
-| Check | How |
-|-------|-----|
-| Current version listed | Compare package.json version to SECURITY.md |
-| Major versions covered | Ensure each major.minor has support status |
-| Old versions marked | EOL versions should show `:x:` not `:white_check_mark:` |
-| Beta/prerelease noted | If publishing beta, include in matrix |
+| Check                  | How                                                     |
+| ---------------------- | ------------------------------------------------------- |
+| Current version listed | Compare package.json version to SECURITY.md             |
+| Major versions covered | Ensure each major.minor has support status              |
+| Old versions marked    | EOL versions should show `:x:` not `:white_check_mark:` |
+| Beta/prerelease noted  | If publishing beta, include in matrix                   |
 
 ### Warning: Stale Version Matrix
 
@@ -292,6 +301,7 @@ gh api repos/{owner}/{repo}/tags --jq '.[].name' | grep -E '^v[0-9]' | head -5
 ```
 
 Update this table when:
+
 - New major/minor version released
 - Old version reaches end-of-life
 - Support policy changes
@@ -342,11 +352,13 @@ When features are not enabled, produce warnings:
 ⚠️ **Missing or Disabled Features:**
 
 ### Files to Create (can dispatch to project agent):
+
 - [ ] SECURITY.md - security policy and vulnerability reporting instructions
 - [ ] .github/dependabot.yml - automated dependency updates
 - [ ] .github/workflows/codeql.yml - code scanning workflow
 
 ### Settings to Enable (manual in GitHub UI):
+
 - [ ] Security advisories - Repo Settings → Security
 - [ ] Private vulnerability reporting - Repo Settings → Security
 - [ ] Dependabot alerts - Repo Settings → Security
@@ -361,6 +373,7 @@ When features are not enabled, produce warnings:
 ## Autonomous Authority
 
 This agent has authority to:
+
 - Scan any repo managed by a project agent
 - Dispatch security fixes to project agents without asking
 - Merge dependabot PRs after verification (via project agents)
@@ -370,6 +383,7 @@ This agent has authority to:
 - **Dispatch to project agents** to fix security configuration
 
 This agent does NOT:
+
 - Fix vulnerabilities directly (delegates to project agents)
 - Monitor repos without a corresponding project agent
 - Skip verification steps

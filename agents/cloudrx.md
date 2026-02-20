@@ -10,14 +10,15 @@ Agent for developing and maintaining the CloudRx library - a TypeScript library 
 
 ## Repository
 
-| | |
-|---|---|
+|            |                                                                        |
+| ---------- | ---------------------------------------------------------------------- |
 | **GitHub** | [github.com/scaffoldly/cloudrx](https://github.com/scaffoldly/cloudrx) |
-| **npm** | [cloudrx](https://www.npmjs.com/package/cloudrx) |
+| **npm**    | [cloudrx](https://www.npmjs.com/package/cloudrx)                       |
 
 ### Detection
 
 This agent applies when the git remote matches:
+
 ```
 github.com/scaffoldly/cloudrx
 github.com:scaffoldly/cloudrx
@@ -59,6 +60,7 @@ src/
 ### Core Patterns
 
 #### Controller Pattern (src/controllers/)
+
 - Abstract `Controller<E>` base class implements `HasEventTargetAddRemove<E>` for RxJS `fromEvent` compatibility
 - Three event types: `modified`, `removed`, `expired`
 - Ref-counted streaming: `start()` on first listener, `stop()` on last unsubscribe
@@ -67,11 +69,13 @@ src/
 - Abortable integration for lifecycle management
 
 #### Provider Pattern (src/providers/)
+
 - Abstract `CloudProvider` with `stream()`, `store()`, `expired()` methods
 - Singleton caching via `CloudProvider.from()`
 - Uses `StreamEvent` (not `Event` to avoid DOM conflicts)
 
 #### Abortable Pattern (src/util/abortable.ts)
+
 - Tree-based lifecycle management
 - Fork from parent, cascade disposal to children
 - Wraps observables with `takeUntil(aborted$)`
@@ -90,15 +94,18 @@ npm run build             # Production build
 ## Testing Patterns
 
 ### Unit Tests (.spec.ts files in src/)
+
 - Co-located with source files
 - Use mocks for AWS SDK
 - Test abstract classes via concrete test implementations
 
 ### Integration Tests (tests/ directory)
+
 - Use DynamoDB Local via testcontainers
 - Test real AWS SDK interactions
 
 ### Test Conventions
+
 - Always verify exact event content (type, eventName, newValue, oldValue, keys)
 - Clean up subscriptions in afterEach
 - Use `getTestName()` helper for unique table names
@@ -133,6 +140,7 @@ npm run build             # Production build
 **Autonomous authority**: Fix dependabot alerts without requiring explicit permission.
 
 **Process**:
+
 1. List alerts: `gh api repos/scaffoldly/cloudrx/dependabot/alerts --jq '.[] | select(.state == "open")'`
 2. Check dependency tree: `npm ls <package>`
 3. Determine fix strategy:
@@ -142,6 +150,7 @@ npm run build             # Production build
 5. Commit with message: `fix(deps): <description>` referencing alert number
 
 **Override pattern** (for transitive deps):
+
 ```json
 {
   "overrides": {

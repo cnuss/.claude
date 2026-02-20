@@ -26,8 +26,8 @@ Establish conventions for contributing to external repositories:
 
 Maintain a curated list of repositories under active development:
 
-| Repository | Description | Status |
-| ---------- | ----------- | ------ |
+| Repository    | Description               | Status |
+| ------------- | ------------------------- | ------ |
 | cnuss/.claude | Claude configuration home | Active |
 
 _Add repositories as work begins._

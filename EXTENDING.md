@@ -34,14 +34,15 @@ Brief description of the project and agent purpose.
 
 ## Repository
 
-| | |
-|---|---|
-| **GitHub** | [github.com/org/repo](https://github.com/org/repo) |
-| **npm/package** | package-name (if applicable) |
+|                 |                                                    |
+| --------------- | -------------------------------------------------- |
+| **GitHub**      | [github.com/org/repo](https://github.com/org/repo) |
+| **npm/package** | package-name (if applicable)                       |
 
 ### Detection
 
 This agent applies when the git remote matches:
+
 - `github.com/org/repo`
 - `github.com:org/repo`
 
@@ -54,9 +55,11 @@ What the project does and its main purpose.
 ## Architecture
 
 ### Directory Structure
+
 <!-- Tree view of key directories -->
 
 ### Core Patterns
+
 <!-- Key architectural patterns used -->
 
 ## Development Commands
@@ -103,6 +106,7 @@ Every agent MUST include:
 **Discovering agents**: List active agents via `ls ~/.claude/agents/*.md`
 
 **When updating agent structure or adding new standard sections**:
+
 1. Update this template in EXTENDING.md
 2. Discover all agents: `ls ~/.claude/agents/*.md`
 3. Skip agents marked as archived (see below)
@@ -117,6 +121,7 @@ To mark an agent as archived (no longer actively maintained), add this signature
 ```
 
 Archived agents:
+
 - Will not be retroactively updated when template changes
 - Remain available for reference
 - Can be un-archived by removing the signature
