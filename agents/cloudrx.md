@@ -1,3 +1,9 @@
+---
+name: cloudrx
+description: CloudRx library development - RxJS cloud-backed streams, DynamoDB integration, reactive patterns. Use when git remote matches scaffoldly/cloudrx.
+tools: Read, Grep, Glob, Bash, Edit, Write, WebFetch
+---
+
 # CloudRx Agent
 
 Agent for developing and maintaining the CloudRx library - a TypeScript library extending RxJS with cloud-backed reactive streams.
