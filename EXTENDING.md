@@ -8,14 +8,102 @@ Proactively suggest and help implement:
 - **MCP server configurations**
 - **Community-discovered MCP servers and tools**
 
-## Agents Pattern
+## Agents
 
-The `~/.claude/agents/` directory uses symlinks to project-specific agent definitions:
+### Directory Structure
+
+Agent definitions live in `~/.claude/agents/` as the source of truth. Projects symlink to these:
 
 ```
 ~/.claude/agents/
-├── installable-sh.md -> ~/installable-sh/agent/installable-sh.md
-└── setcd-io.md -> ~/setcd-io/agent/setcd-io.md
+├── cloudrx.md           # Source file
+└── other-project.md     # Source file
+
+~/project/agent/
+└── cloudrx.md -> ../../../.claude/agents/cloudrx.md  # Relative symlink
 ```
 
-This keeps agent definitions with their projects while making them discoverable from the root.
+### Agent Template
+
+All agents should follow this structure:
+
+```markdown
+# {Project} Agent
+
+Brief description of the project and agent purpose.
+
+## Repository
+
+| | |
+|---|---|
+| **GitHub** | [github.com/org/repo](https://github.com/org/repo) |
+| **npm/package** | package-name (if applicable) |
+
+### Detection
+
+This agent applies when the git remote matches:
+- `github.com/org/repo`
+- `github.com:org/repo`
+
+Check via: `git remote -v | grep -q "org/repo"`
+
+## Project Overview
+
+What the project does and its main purpose.
+
+## Architecture
+
+### Directory Structure
+<!-- Tree view of key directories -->
+
+### Core Patterns
+<!-- Key architectural patterns used -->
+
+## Development Commands
+
+<!-- Common commands for development -->
+
+## Testing Patterns
+
+<!-- How tests are organized and run -->
+
+## Key Principles
+
+<!-- Numbered list of project-specific conventions -->
+
+## Current State
+
+<!-- Brief status of major components -->
+
+## CI/CD
+
+<!-- Build/deploy pipeline details -->
+```
+
+### Required Sections
+
+Every agent MUST include:
+
+1. **Repository** — GitHub URL and package registry links
+2. **Detection** — Git remote pattern for identifying when agent applies
+3. **Project Overview** — What the project does
+4. **Development Commands** — How to build, test, lint
+5. **Key Principles** — Project-specific conventions and rules
+
+### Guidelines for Creating Agents
+
+1. **Create agent when**: A project has distinct patterns, conventions, or domain knowledge worth preserving
+2. **Source location**: `~/.claude/agents/{project}.md`
+3. **Project symlink**: `{project}/agent/{project}.md` → `../../../.claude/agents/{project}.md` (relative path)
+4. **Keep updated**: Update agent definitions as projects evolve — patterns change, new conventions emerge
+5. **Lint before commit**: Always run project linters before committing changes
+
+### Maintenance Reminder
+
+**IMPORTANT**: When updating agent structure or adding new standard sections:
+- Update this template in EXTENDING.md
+- Retroactively update ALL existing agents to match the new structure
+- Ensure consistency across all agent definitions
+
+Current agents to maintain:
+- `~/.claude/agents/cloudrx.md`
