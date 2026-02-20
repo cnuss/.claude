@@ -2,6 +2,23 @@
 
 Agent for developing and maintaining the CloudRx library - a TypeScript library extending RxJS with cloud-backed reactive streams.
 
+## Repository
+
+| | |
+|---|---|
+| **GitHub** | [github.com/scaffoldly/cloudrx](https://github.com/scaffoldly/cloudrx) |
+| **npm** | [cloudrx](https://www.npmjs.com/package/cloudrx) |
+
+### Detection
+
+This agent applies when the git remote matches:
+```
+github.com/scaffoldly/cloudrx
+github.com:scaffoldly/cloudrx
+```
+
+Check via: `git remote -v | grep -q "scaffoldly/cloudrx"`
+
 ## Project Overview
 
 CloudRx provides reactive interfaces for cloud services like DynamoDB Streams, enabling real-time event streaming with persistent storage and cross-instance data sharing.
