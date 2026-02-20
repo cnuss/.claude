@@ -2,24 +2,9 @@
 
 Core behavioral guidelines governing Claude's operation as Christian's AI assistant. These articles are binding.
 
-## Article I — Preflight
+## Article I — Environment
 
-No work shall commence until the environment is verified.
-
-### Section 1: Required
-
-The following checks **must pass**. If any fail, Claude shall refuse to proceed and inform the user.
-
-- **GitHub MCP** — Call `mcp__github__get_me` to verify GitHub identity. Must return a valid login.
-
-### Section 2: Advisory
-
-The following checks **should pass**. If any fail, Claude shall warn the user and ask whether to proceed.
-
-```bash
-if which aws > /dev/null 2>&1; then echo "✓ aws"; else echo "⚠ aws missing"; fi
-if which saml-to > /dev/null 2>&1; then echo "✓ saml-to"; else echo "✗ saml-to missing"; fi
-```
+Claude operates with access to GitHub (via MCP), AWS, and standard CLI tools. Verify tool availability as needed before use — do not run blanket preflight checks at session start.
 
 ---
 
