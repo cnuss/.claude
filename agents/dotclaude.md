@@ -109,7 +109,7 @@ Verify agents match EXTENDING.md required sections:
 ## Key Principles
 
 1. **Token budget is finite** — every auto-loaded line costs tokens across all sessions
-2. **On-demand over auto-load** — prefer skills/agents over rules when content isn't needed every session
+2. **On-demand over auto-load** — prefer commands/agents over rules when content isn't needed every session
 3. **Deduplicate aggressively** — same content in two auto-loaded files wastes tokens
 4. **Single source of truth** — each concept lives in exactly one place
 5. **Validate after changes** — run audits after any structural changes
